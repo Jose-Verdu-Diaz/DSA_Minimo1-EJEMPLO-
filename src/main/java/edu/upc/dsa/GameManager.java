@@ -1,18 +1,20 @@
-/*package edu.upc.dsa;
+package edu.upc.dsa;
 
-import edu.upc.dsa.models.Track;
+import edu.upc.dsa.models.User;
+import edu.upc.dsa.models.Product;
 
 import java.util.List;
 
-public interface TracksManager {
+public interface GameManager {
+    List<User> getSortedUsersAplhabetical();
+    int numUsers();
+    int numProducts();
 
+    int addUser(String id, String name);
+    int setUser(String id, String name);
+    User getUser(String id);
 
-    public Track addTrack(String title, String singer);
-    public Track addTrack(Track t);
-    public Track getTrack(String id);
-    public List<Track> findAll();
-    public void deleteTrack(String id);
-    public Track updateTrack(Track t);
-
-    public int size();
-}*/
+    int addProduct(String id, String name);
+    int setProduct(String id, String name);
+    Product getProduct(String id);
+}

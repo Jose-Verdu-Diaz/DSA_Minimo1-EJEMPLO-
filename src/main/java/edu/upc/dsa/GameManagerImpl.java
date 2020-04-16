@@ -1,92 +1,89 @@
-/*package edu.upc.dsa;
+package edu.upc.dsa;
 
-import edu.upc.dsa.models.Track;
+import edu.upc.dsa.models.User;
+import edu.upc.dsa.models.Product;
 
-import java.util.LinkedList;
-import java.util.List;
 import org.apache.log4j.Logger;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
-public class TracksManagerImpl implements TracksManager {
-    private static TracksManager instance;
-    protected List<Track> tracks;
-    final static Logger logger = Logger.getLogger(TracksManagerImpl.class);
+public class GameManagerImpl implements GameManager {
+    private static GameManager instance;
+    private static HashMap<String, User> userMap;
+    private static List<Product> productList;
+    private static Logger log = Logger.getLogger(GameManagerImpl.class);
 
-    private TracksManagerImpl() {
-        this.tracks = new LinkedList<>();
+    private GameManagerImpl(){
+        this.userMap = new HashMap<>();
+        this.productList = new ArrayList<>();
     }
 
-    public static TracksManager getInstance() {
-        if (instance==null) instance = new TracksManagerImpl();
+    public static GameManager getInstance(){
+        if(instance == null) {instance = new GameManagerImpl();}
         return instance;
     }
 
-    public int size() {
-        int ret = this.tracks.size();
-        logger.info("size " + ret);
-
-        return ret;
-    }
-
-    public Track addTrack(Track t) {
-        logger.info("new Track " + t);
-
-        this.tracks.add (t);
-        logger.info("new Track added");
-        return t;
-    }
-
-    public Track addTrack(String title, String singer) {
-        return this.addTrack(new Track(title, singer));
-    }
-
-    public Track getTrack(String id) {
-        logger.info("getTrack("+id+")");
-
-        for (Track t: this.tracks) {
-            if (t.getId().equals(id)) {
-                logger.info("getTrack("+id+"): "+t);
-
-                return t;
-            }
-        }
-
-        logger.warn("not found " + id);
+    @Override
+    public List<User> getSortedUsersAplhabetical() {
         return null;
     }
 
-    public List<Track> findAll() {
-        return this.tracks;
+    @Override
+    public int numUsers() {
+        return 0;
     }
 
     @Override
-    public void deleteTrack(String id) {
-
-        Track t = this.getTrack(id);
-        if (t==null) {
-            logger.warn("not found " + t);
-        }
-        else logger.info(t+" deleted ");
-
-        this.tracks.remove(t);
-
+    public int numProducts() {
+        return 0;
     }
 
     @Override
-    public Track updateTrack(Track p) {
-        Track t = this.getTrack(p.getId());
-
-        if (t!=null) {
-            logger.info(p+" rebut!!!! ");
-
-            t.setSinger(p.getSinger());
-            t.setTitle(p.getTitle());
-
-            logger.info(t+" updated ");
+    public int addUser(String id, String name) {
+        try{
+            User newUser = new User(id,name);
+            this.userMap.put(id,newUser);
+            log.info("User added: "+ newUser);
+            return 201; //CREATED
         }
-        else {
-            logger.warn("not found "+p);
+        catch (Exception e){
+            log.error("Unexpected Exception");
+            return 500;//INTERNAL SERVER ERROR
         }
-
-        return t;
     }
-}*/
+
+    @Override
+    public int setUser(String id, String name) {
+        User updatedUser = this.userMap.get(id);
+        return 0;
+    }
+
+    @Override
+    public User getUser(String id) {
+        return null;
+    }
+
+    @Override
+    public int addProduct(String id, String name) {
+        try{
+            Product newProduct = new Product(id,name);
+            this.productList.add(newProduct);
+            return 201; //CREATED
+        }
+        catch (Exception e){
+            log.error("Unexpected Exception");
+            return 500;//INTERNAL SERVER ERROR
+        }
+    }
+
+    @Override
+    public int setProduct(String id, String name) {
+        return 0;
+    }
+
+    @Override
+    public Product getProduct(String id) {
+        return null;
+    }
+}
